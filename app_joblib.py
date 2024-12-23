@@ -384,6 +384,41 @@ data = data.drop(columns=['Unnamed: 0', 'Sample_code_number'])
     """, language='python')
 
     st.write("Dengan mengikuti tahap-tahap preprocessing ini, dataset menjadi lebih bersih dan siap untuk dimasukkan ke dalam model prediksi.")
+    
+    # Split data
+    
+    data = pd.read_csv('breast_cancer_wisconsin_original.csv')
+    X = data.drop(columns=['Class'])  # Fitur
+    y = data['Class']  # Label
+
+    # Membagi data menjadi train dan test set
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+    st.subheader("Hasil Split Data")
+    st.write("Jumlah sampel dalam Training Set:", len(X_train))
+    st.write("Jumlah sampel dalam Test Set:", len(X_test))
+
+    st.subheader("Distribusi Kelas dalam Training dan Test Set")
+    train_class_counts = Counter(y_train)
+    test_class_counts = Counter(y_test)
+
+    st.write("Distribusi kelas pada Training Set:", train_class_counts)
+    st.write("Distribusi kelas pada Test Set:", test_class_counts)
+
+    # Visualisasi distribusi kelas setelah split
+    plt.figure(figsize=(8, 6))
+    sns.barplot(x=list(train_class_counts.keys()), y=list(train_class_counts.values()), palette='coolwarm')
+    plt.title('Distribusi Kelas pada Training Set')
+    plt.xlabel('Kelas')
+    plt.ylabel('Jumlah Sampel')
+    st.pyplot(plt)
+
+    plt.figure(figsize=(8, 6))
+    sns.barplot(x=list(test_class_counts.keys()), y=list(test_class_counts.values()), palette='coolwarm')
+    plt.title('Distribusi Kelas pada Test Set')
+    plt.xlabel('Kelas')
+    plt.ylabel('Jumlah Sampel')
+    st.pyplot(plt)
 
 
 # Section: Prediction
